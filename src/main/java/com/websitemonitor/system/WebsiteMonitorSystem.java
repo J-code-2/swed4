@@ -1,9 +1,11 @@
 package com.websitemonitor.system;
 
-import com.websitemonitor.model.Notification;
 import com.websitemonitor.model.Subscription;
+import com.websitemonitor.model.Website;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class WebsiteMonitorSystem {
     private ArrayList<Subscription> subscriptions;
@@ -18,26 +20,17 @@ public class WebsiteMonitorSystem {
 
     public void monitorWebsite(Subscription subscription) {
         subscription.getWebsite().checkForUpdates();
-        detectUpdate(subscription);
-    }
-
-    public void detectUpdate(Subscription subscription) {
-        System.out.println("Update detected on: " + subscription.getWebsite().getUrl());
-        notifyUser(subscription);
-    }
-
-    public void notifyUser(Subscription subscription) {
-        String message = "Update on " + subscription.getWebsite().getUrl()
-                + " via " + subscription.getPreference().getChannel();
-        Notification notification = new Notification(message);
-        notification.sendNotification();
     }
 
     public void monitorAll() {
+        Set<Website> activeWebsites = new HashSet<>();
         for (Subscription sub : subscriptions) {
             if (sub.getStatus().equals("ACTIVE")) {
-                monitorWebsite(sub);
+                activeWebsites.add(sub.getWebsite());
             }
+        }
+        for (Website website : activeWebsites) {
+            website.checkForUpdates();
         }
     }
 }

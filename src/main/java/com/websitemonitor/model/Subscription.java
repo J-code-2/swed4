@@ -1,6 +1,6 @@
 package com.websitemonitor.model;
 
-public class Subscription {
+public class Subscription implements Observer {
     private int subscriptionId;
     private String status;
     private Website website;
@@ -11,6 +11,7 @@ public class Subscription {
         this.status = "ACTIVE";
         this.website = website;
         this.preference = preference;
+        this.website.registerObserver(this);
     }
 
     public void updateSubscription(String newStatus) {
@@ -20,7 +21,20 @@ public class Subscription {
 
     public void deleteSubscription() {
         this.status = "DELETED";
+        this.website.removeObserver(this);
         System.out.println("Subscription " + subscriptionId + " deleted.");
+    }
+
+    @Override
+    public void update(Website website) {
+        if (!"ACTIVE".equals(status)) {
+            return;
+        }
+
+        String message = "Update on " + website.getUrl()
+                + " via " + preference.getChannel();
+        Notification notification = new Notification(message);
+        notification.sendNotification();
     }
 
     public int getSubscriptionId() {
