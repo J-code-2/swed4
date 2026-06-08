@@ -16,7 +16,7 @@ public class WebsiteMonitorSystemTest {
         Subscription sub = user.createSubscription(site, pref);
         system.addSubscription(sub);
 
-        system.monitorAll();
+        system.monitorAll("<html>test</html>");
     }
 
     @Test
@@ -29,6 +29,6 @@ public class WebsiteMonitorSystemTest {
         sub.updateSubscription("PAUSED");
 
         system.addSubscription(sub);
-        system.monitorAll();
+        system.monitorAll("<html>test</html>");
     }
 }

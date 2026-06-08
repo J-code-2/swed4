@@ -18,11 +18,11 @@ public class WebsiteMonitorSystem {
         subscriptions.add(subscription);
     }
 
-    public void monitorWebsite(Subscription subscription) {
-        subscription.getWebsite().checkForUpdates();
+    public void monitorWebsite(Subscription subscription, String content) {
+        subscription.getWebsite().checkForUpdates(content);
     }
 
-    public void monitorAll() {
+    public void monitorAll(String content) {
         Set<Website> activeWebsites = new HashSet<>();
         for (Subscription sub : subscriptions) {
             if (sub.getStatus().equals("ACTIVE")) {
@@ -30,7 +30,7 @@ public class WebsiteMonitorSystem {
             }
         }
         for (Website website : activeWebsites) {
-            website.checkForUpdates();
+            website.checkForUpdates(content);
         }
     }
 }
